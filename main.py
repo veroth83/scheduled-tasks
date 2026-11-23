@@ -19,8 +19,14 @@ now=datetime.datetime.now()
 month=now.month
 day=now.day
 
-myemail = "veroth83prueba@gmail.com"
-password = "ofuh qhiw yeaj lypb"
+# BEFORE (don't do this — secrets visible to everyone!)
+MY_EMAIL = "myemail@gmail.com"
+MY_PASSWORD = "mysecretpassword"
+
+# AFTER (secrets stored securely in GitHub)
+MY_EMAIL = os.environ.get("MY_EMAIL")
+MY_PASSWORD = os.environ.get("MY_PASSWORD")
+
 
 carta="letter_templates/letter_"+str(random.randint(1,3))+".txt"
 file=pandas.read_csv("birthdays.csv")
