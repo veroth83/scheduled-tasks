@@ -13,6 +13,7 @@ import datetime
 import random
 import smtplib
 import pandas
+import os
 
 now=datetime.datetime.now()
 month=now.month
