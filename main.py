@@ -24,8 +24,8 @@ MY_EMAIL = "myemail@gmail.com"
 MY_PASSWORD = "mysecretpassword"
 
 # AFTER (secrets stored securely in GitHub)
-MY_EMAIL = os.environ.get("MY_EMAIL")
-MY_PASSWORD = os.environ.get("MY_PASSWORD")
+myemail = os.environ.get("MY_EMAIL")
+password = os.environ.get("MY_PASSWORD")
 
 
 carta="letter_templates/letter_"+str(random.randint(1,3))+".txt"
