@@ -3,7 +3,7 @@ from twilio.rest import Client
 import os
 
 
-ACCOUNT_SID ="ACb7d76af3bde11fd8d2d09bfc9bbb2508"
+#ACCOUNT_SID ="ACb7d76af3bde11fd8d2d09bfc9bbb2508"
 #AUTH_TOKEN ="9bc99cc4b012767232f0dc6fb17f08f2"
 
 
