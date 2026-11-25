@@ -1,49 +1,59 @@
-##################### Extra Hard Starting Project ######################
-
-# 1. Update the birthdays.csv
-
-# 2. Check if today matches a birthday in the birthdays.csv
-
-# 3. If step 2 is true, pick a random letter from letter templates and replace the [NAME] with the person's actual name from birthdays.csv
-
-# 4. Send the letter generated in step 3 to that person's email address.
-
-
-import datetime
-import random
-import smtplib
-import pandas
+import requests
+from twilio.rest import Client
 import os
 
-now=datetime.datetime.now()
-month=now.month
-day=now.day
 
-# BEFORE (don't do this — secrets visible to everyone!)
-MY_EMAIL = "myemail@gmail.com"
-MY_PASSWORD = "mysecretpassword"
-
-# AFTER (secrets stored securely in GitHub)
-myemail = os.environ.get("MY_EMAIL")
-password = os.environ.get("MY_PASSWORD")
+ACCOUNT_SID ="ACb7d76af3bde11fd8d2d09bfc9bbb2508"
+#AUTH_TOKEN ="9bc99cc4b012767232f0dc6fb17f08f2"
 
 
-carta="letter_templates/letter_"+str(random.randint(1,3))+".txt"
-file=pandas.read_csv("birthdays.csv")
 
-birthdays=file.to_dict(orient="records")
-#print(birthdays)
-for birthday in birthdays:
-    #print(birthday["month"])
-    if birthday["month"]==month and birthday["day"]==day:
-        with open(carta, "r") as f:
-            body = f.read()
-            new_body=body.replace("[NAME]", birthday["name"])
-            print(new_body)
-            with smtplib.SMTP('smtp.gmail.com', 587) as connection:
-                connection.starttls()
-                connection.login(user=myemail, password=password)
-                connection.sendmail(from_addr=myemail, to_addrs=birthday["email"],
-                                    msg=f"Subject:Happy birthday\n\n{new_body}")
+API_KEY =os.environ.get("OWM_API_KEY")
+AUTH_TOKEN =os.environ.get("OWM_AUTH_TOKEN")
+ACCOUNT_SID =os.environ.get("OWM_ACCOUNT_SID")
+print(API_KEY)
+#API_KEY="d3942f549005e2c2244ac3c5fbc16883"
+city_name="lima,PE"
+
+# LAT=-12.046373
+# LONG=-77.042755
+
+
+LAT=16.756932
+LONG=-93.129235
+
+#https://api.openweathermap.org/data/2.5/forecast?lat=-12.046373&lon=-77.042755&appid=d3942f549005e2c2244ac3c5fbc16883
+
+# parameters={
+#     "q":city_name,
+#     "appid":API_KEY,
+# }
+
+parameters = {
+    "lat": LAT,
+    "lon": LONG,
+    "appid":API_KEY,
+    "cnt":4,
+}
+
+
+request=requests.get(url="https://api.openweathermap.org/data/2.5/forecast", params=parameters)
+request.raise_for_status()
+weather_data=request.json()
+
+
+
+
+llovera=[clima["weather"][0]["id"] for clima in weather_data["list"] if clima["weather"][0]["id"] <700]
+if len(llovera)==0:
+    print("No llovera")
+else:
+    client = Client(ACCOUNT_SID, AUTH_TOKEN)
+    message = client.messages.create(
+        to="whatsapp:+51991359498",
+        from_="whatsapp:+17372212163",
+        content_sid="HXfe5ab5f00277942d4d4200328b4d403c",
+    )
+    print(message.sid)
 
 
